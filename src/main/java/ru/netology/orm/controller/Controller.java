@@ -17,7 +17,7 @@ public class Controller {
     }
 
     @GetMapping("/persons/by-city")
-    public String get(@RequestParam("city") String city) {
+    public String get(@RequestParam("city") final String city) {
         return service.getPersonByCity(city);
     }
 
@@ -32,7 +32,7 @@ public class Controller {
     }
 
     @DeleteMapping("/persons")
-    public String delete(@RequestParam("name") String name) {
+    public String delete(@RequestParam("name") final String name) {
         return service.delete(name);
     }
 
