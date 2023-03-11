@@ -1,28 +1,34 @@
 package ru.netology.orm.repository;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import ru.netology.orm.model.Person;
 
+import java.util.Optional;
+
 @org.springframework.stereotype.Repository
-public class Repository {
-
-    @PersistenceContext
-    public EntityManager entityManager;
-
-    Person person = new Person();
+public interface Repository extends JpaRepository<Person, Long> {
 
     @Transactional
-    public void run(Person person) {
-        entityManager.persist(person);
-    }
+    Optional<Person> findByName(String name);
 
     @Transactional
-    public String getPersonByCity(String city) {
-        Query query = entityManager.createQuery("select a from Person a where a.cityOfLiving = :city");
-        query.setParameter("city", city);
-        return query.getSingleResult().toString();
-    }
+    Optional<Person> findByNameContainingAndSurnameContainingAndAge(String name, String surname, int age);
+
+    @Transactional
+    Optional<Person> findByCityOfLivingContaining(String city);
+
+    @Transactional
+    @Modifying
+    @Query("update Person set isRemoved=true where id = :id")
+    void markForRemoving(@Param("id") Long id);
+
+    @Transactional
+    @Modifying
+    @Query("update Person set isRemoved=false where id = :id")
+    void unmarkForRemoving(@Param("id") Long id);
+
 }

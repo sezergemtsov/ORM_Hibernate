@@ -32,4 +32,10 @@ public class Person {
     @Column(nullable = false)
     private String cityOfLiving;
 
+    @Column
+    private boolean isRemoved;
+
+    @Column
+    private boolean specialMark;
+
 }

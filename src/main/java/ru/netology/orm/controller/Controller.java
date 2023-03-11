@@ -1,10 +1,10 @@
 package ru.netology.orm.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.netology.orm.model.PersonDTO;
 import ru.netology.orm.service.Service;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/")
@@ -21,9 +21,19 @@ public class Controller {
         return service.getPersonByCity(city);
     }
 
-    @GetMapping()
-    public String get() {
-        service.get();
-        return "Table was filled with 3 persons, you can find person by next cities: Moscow, Samara, Volgograd";
+    @GetMapping("/persons/all")
+    public List<PersonDTO> getAll() {
+        return service.getAll();
     }
+
+    @PostMapping("/persons/add")
+    public String post(final PersonDTO person) {
+        return service.post(person);
+    }
+
+    @DeleteMapping("/persons")
+    public String delete(@RequestParam("name") String name) {
+        return service.delete(name);
+    }
+
 }
