@@ -23,7 +23,7 @@ public interface Repository extends JpaRepository<Person, Long> {
     Optional<Person> findByCityOfLivingContaining(String city);
 
     @Transactional
-    List<Person> findByAgeLessThan(Integer age);
+    List<Person> findByAgeLessThanOrderByAge(Integer age);
 
     @Transactional
     Optional<Person> findByNameAndSurname(String name, String surname);

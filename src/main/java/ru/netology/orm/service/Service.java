@@ -71,7 +71,7 @@ public class Service {
     }
 
     public List<PersonDTO> findByAgeLess(Integer age) {
-        List<Person> personsLessThen = repository.findByAgeLessThan(age);
+        List<Person> personsLessThen = repository.findByAgeLessThanOrderByAge(age);
         List<PersonDTO> sendingList = new ArrayList<>();
         personsLessThen.forEach(x -> {
             if (!x.isRemoved()) {
