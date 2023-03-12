@@ -1,6 +1,7 @@
 package ru.netology.orm.service;
 
 import jakarta.transaction.Transactional;
+import ru.netology.orm.exceptions.NotFoundExceptions;
 import ru.netology.orm.model.Person;
 import ru.netology.orm.model.PersonDTO;
 import ru.netology.orm.repository.Repository;
@@ -69,6 +70,32 @@ public class Service {
         return respond.get();
     }
 
+    public List<PersonDTO> findByAgeLess(Integer age) {
+        List<Person> personsLessThen = repository.findByAgeLessThan(age);
+        List<PersonDTO> sendingList = new ArrayList<>();
+        personsLessThen.forEach(x -> {
+            if (!x.isRemoved()) {
+                sendingList.add(convertToUserFormat(x));
+            }
+        });
+        return sendingList;
+    }
+
+    public PersonDTO findByNameAndSurname(String name, String surname) {
+        Optional<Person> searchedPerson = repository.findByNameAndSurname(name, surname);
+        final PersonDTO[] respond = new PersonDTO[1];
+        searchedPerson.ifPresent(p -> {
+            if (!p.isRemoved()) {
+                respond[0] = convertToUserFormat(p);
+            }
+        });
+        if (respond[0] != null) {
+            return respond[0];
+        } else {
+            throw new NotFoundExceptions("Персона не найдена");
+        }
+    }
+
     private Person convertToDataBaseFormat(PersonDTO person) {
         return new Person(person.id(),
                 person.name(), person.surname(),
@@ -86,6 +113,6 @@ public class Service {
 
     @Transactional
     private Optional<Person> findMatch(PersonDTO person) {
-        return repository.findByNameContainingAndSurnameContainingAndAge(person.name().toLowerCase(), person.surname().toLowerCase(), person.age());
+        return repository.findByNameAndSurnameAndAge(person.name().toLowerCase(), person.surname().toLowerCase(), person.age());
     }
 }

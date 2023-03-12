@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.netology.orm.model.Person;
 
+import java.util.List;
 import java.util.Optional;
 
 @org.springframework.stereotype.Repository
@@ -16,10 +17,17 @@ public interface Repository extends JpaRepository<Person, Long> {
     Optional<Person> findByName(String name);
 
     @Transactional
-    Optional<Person> findByNameContainingAndSurnameContainingAndAge(String name, String surname, int age);
+    Optional<Person> findByNameAndSurnameAndAge(String name, String surname, int age);
 
     @Transactional
     Optional<Person> findByCityOfLivingContaining(String city);
+
+    @Transactional
+    List<Person> findByAgeLessThan(Integer age);
+
+    @Transactional
+    Optional<Person> findByNameAndSurname(String name, String surname);
+
 
     @Transactional
     @Modifying

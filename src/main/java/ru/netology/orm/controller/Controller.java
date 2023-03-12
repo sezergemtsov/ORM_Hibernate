@@ -36,4 +36,14 @@ public class Controller {
         return service.delete(name);
     }
 
+    @GetMapping("/persons/by-age")
+    public List<PersonDTO> getPersonsByAgeLessThen(@RequestParam("age") final Integer age) {
+        return service.findByAgeLess(age);
+    }
+
+    @GetMapping("/persons/by-name-surname")
+    public PersonDTO getPersonByNameAndSurname(@RequestParam("name") final String name, @RequestParam("surname") final String surname) {
+        return service.findByNameAndSurname(name, surname);
+    }
+
 }
