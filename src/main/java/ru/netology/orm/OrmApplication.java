@@ -3,9 +3,9 @@ package ru.netology.orm;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,6 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @SpringBootApplication
 @EnableWebSecurity
+@EnableMethodSecurity(securedEnabled = true)
 public class OrmApplication {
 
     public static void main(String[] args) {
@@ -33,8 +34,7 @@ public class OrmApplication {
                         .usernameParameter("username")
                         .passwordParameter("password")
                         .permitAll()
-                )
-                .logout(LogoutConfigurer::permitAll);
+                );
 
         return http.build();
     }
@@ -47,15 +47,20 @@ public class OrmApplication {
         UserDetails user = users
                 .username("user")
                 .password("password")
-                .authorities("ROLE_USER")
+                .authorities("ROLE_READ")
                 .build();
         UserDetails admin = users
                 .username("admin")
-                .password("123")
-                .authorities("ROLE_ADMIN")
+                .password("admin")
+                .authorities("ROLE_DELETE", "ROLE_READ", "ROLE_WRITE")
+                .build();
+        UserDetails writer = users
+                .username("writer")
+                .password("writer")
+                .authorities("ROLE_WRITE")
                 .build();
 
-        return new InMemoryUserDetailsManager(user, admin);
+        return new InMemoryUserDetailsManager(user, admin, writer);
     }
 
 }

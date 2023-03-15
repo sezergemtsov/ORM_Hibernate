@@ -1,5 +1,7 @@
 package ru.netology.orm.controller;
 
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.netology.orm.model.PersonDTO;
 import ru.netology.orm.service.Service;
@@ -19,6 +21,36 @@ public class Controller {
     @GetMapping("/home")
     public String getHomePage() {
         return "добро пожаловать";
+    }
+
+    @Secured("ROLE_READ")
+    @GetMapping("/read")
+    public String read() {
+        return "read";
+    }
+
+    @Secured("ROLE_WRITE")
+    @GetMapping("/write")
+    public String write() {
+        return "write";
+    }
+
+    @PreAuthorize("hasRole('WRITE') or hasRole('DELETE')")
+    @GetMapping("/write-delete")
+    public String writeDelete() {
+        return "write-delete";
+    }
+
+    @PreAuthorize("#name==authentication.principal.username")
+    @GetMapping("/username")
+    public String username(@RequestParam("name") String name) {
+        return name;
+    }
+
+
+    @GetMapping("/delete")
+    public String delete() {
+        return "delete";
     }
 
     @GetMapping("/")
