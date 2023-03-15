@@ -16,8 +16,24 @@ public class Controller {
         this.service = service;
     }
 
+    @GetMapping("/home")
+    public String getHomePage() {
+        return "добро пожаловать";
+    }
+
+    @GetMapping("/")
+    public String login() {
+        return "авторизация";
+    }
+
+    @GetMapping("/error")
+    public String error() {
+        return "что-то пошло не так";
+    }
+
     @GetMapping("/persons/by-city")
     public String get(@RequestParam("city") final String city) {
+
         return service.getPersonByCity(city);
     }
 

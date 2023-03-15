@@ -12,4 +12,9 @@ public class ExceptionsAdvise {
     public ResponseEntity<String> notFound(NotFoundExceptions e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<String> forbidden(ForbiddenException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
+    }
 }
