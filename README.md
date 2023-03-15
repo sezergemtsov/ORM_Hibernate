@@ -25,8 +25,16 @@
 
 ### В проект добавлен функционал Spring Security
 
-Так как класс WebSecurityConfigurerAdapter был выведен из Spring 3+ версии приложение реализовано с использованием 
-доступного для работы SecurityFilterChain
+Доступ реализован защитой методов контроллера
 
-Добавлены 2 роли user ("password) и admin ("123") с разными уровнями допуска. Админский доступ требуется для 
-запроса ""http://localhost:8081/persons/all", для остальных настроено требование авторизации.
+Добавлены 3 роли user ("password) , admin ("admin") и writer ("writer") с разными уровнями допуска. 
+
+Для проверки доступа созданы энжпоинты:
+
+Для user: "http://localhost:8081/read"
+
+Для admin или writer: "http://localhost:8081/write-delete"
+
+Для writer: "http://localhost:8081/write"
+
+Запрос: "http://localhost:8081/username?name=somename" вернет имя если оно совпадает с авторизованым пользователем
